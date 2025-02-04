@@ -2,158 +2,59 @@
 <html>
 <head>
   <title>Sukothai Generator</title>
-  <style>
-    body {
-      font-family: monospace;
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      background: #f7f7f7;
-    }
-    
-    .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    button {
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-      margin-right: 1rem;
-    }
-    
-    button:disabled {
-      background: #93c5fd;
-      cursor: not-allowed;
-    }
-    
-    .controls {
-      margin: 1rem 0;
-    }
-    
-    .status {
-      font-family: monospace;
-      margin: 1rem 0;
-      padding: 1rem;
-      background: #f0f0f0;
-      border-radius: 4px;
-    }
-    
-    #fileInput {
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .input-selector {
-      margin-bottom: 1rem;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 4px;
-    }
-
-    .input-option {
-      margin: 1rem 0;
-    }
-
-    .recording-controls {
-      display: none;
-      margin: 1rem 0;
-    }
-
-    .recording-controls.active {
-      display: block;
-    }
-
-    label {
-      display: block;
-      margin: 0.5rem 0;
-    }
-
-    .record-button {
-      background: #dc2626;
-    }
-
-    .record-button.recording {
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-
-    select {
-      padding: 0.5rem;
-      margin-bottom: 1rem;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    
-  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Sukothai Generator</h1>
-    <p>Create a Sukothai-style composition using an audio file or recording.</p>
-    
-    <div class="input-selector">
-      <h3>Choose Input Method</h3>
-      <div class="input-option">
-        <input type="radio" name="inputMethod" id="fileMethod" value="file" checked>
-        <label for="fileMethod">Upload</label>
-        <input type="file" id="fileInput" accept="audio/*">
-      </div>
-      
-      <div class="input-option">
-        <input type="radio" name="inputMethod" id="recordMethod" value="record">
-        <label for="recordMethod">Record</label>
-        <div class="recording-controls" id="recordingControls">
-          <button id="recordButton" class="record-button">Start Recording</button>
-          <span id="recordingTime">00:00</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="input-option">
-      <label for="maxLayers">Maximum Number of Layers:</label>
-      <select id="maxLayers">
-        <option value="0">1 layer</option>
-        <option value="1">2 layers</option>
-        <option value="2">4 layers</option>
-        <option value="3">8 layers</option>
-        <option value="4">16 layers</option>
-        <option value="5">32 layers</option>
-        <option value="6">64 layers</option>
-        <option value="7">128 layers</option>
-        <option value="8">256 layers</option>
-        <option value="9">512 layers</option>
-        <option value="10" selected>1024 layers</option>
-        <option value="11">2048 layers</option>
-        <option value="12">4096 layers</option>
-      </select>
-    </div>
-
-    <div class="controls">
-      <button id="startButton" disabled>Start</button>
-      <button id="stopButton" disabled>Stop</button>
+  <h1>Sukothai Generator</h1>
+  <p>Create a Sukothai-style composition using an audio file or recording.</p>
+  
+  <div>
+    <h3>Choose Input Method</h3>
+    <div>
+      <input type="radio" name="inputMethod" id="fileMethod" value="file" checked>
+      <label for="fileMethod">Upload</label>
+      <input type="file" id="fileInput" accept="audio/*">
     </div>
     
-    <div class="status" id="status">Ready to start</div>
+    <div>
+      <input type="radio" name="inputMethod" id="recordMethod" value="record">
+      <label for="recordMethod">Record</label>
+      <div id="recordingControls" hidden>
+        <button id="recordButton">Start Recording</button>
+        <span id="recordingTime">00:00</span>
+      </div>
+    </div>
   </div>
 
+  <div>
+    <label for="maxLayers">Maximum Number of Layers:</label>
+    <select id="maxLayers">
+      <option value="0">1 layer</option>
+      <option value="1">2 layers</option>
+      <option value="2">4 layers</option>
+      <option value="3">8 layers</option>
+      <option value="4">16 layers</option>
+      <option value="5">32 layers</option>
+      <option value="6">64 layers</option>
+      <option value="7">128 layers</option>
+      <option value="8">256 layers</option>
+      <option value="9">512 layers</option>
+      <option value="10" selected>1024 layers</option>
+      <option value="11">2048 layers</option>
+      <option value="12">4096 layers</option>
+    </select>
+  </div>
+
+  <div>
+    <button id="startButton" disabled>Start</button>
+    <button id="stopButton" disabled>Stop</button>
+  </div>
+  
+  <div id="status">Ready to start</div>
+
   <script>
-    // Audio constants
-    const INITIAL_VOLUME = 1.0;    // Start at full volume
-    const BASE_DELAY = 100;         // 50ms base delay
-    const DELAY_VARIATION = 5;    // ±10ms variation
+    const INITIAL_VOLUME = 1.0;
+    const BASE_DELAY = 100;
+    const DELAY_VARIATION = 5;
     
     let audioContext;
     let sourceBuffer;
@@ -161,29 +62,22 @@
     let isPlaying = false;
     let activeSources = [];
     let nextGenerationTimeout;
-    
-    // Recording variables
     let mediaRecorder;
     let recordedChunks = [];
     let isRecording = false;
     let recordingStartTime;
     let recordingTimer;
 
-    // Initialize audio context on user interaction
     document.getElementById('startButton').addEventListener('click', startPiece);
     document.getElementById('stopButton').addEventListener('click', stopPiece);
     
-    // Handle input method selection
     document.querySelectorAll('input[name="inputMethod"]').forEach(radio => {
       radio.addEventListener('change', (e) => {
-        document.getElementById('fileInput').style.display = 
-          e.target.value === 'file' ? 'block' : 'none';
-        document.getElementById('recordingControls').classList.toggle('active', 
-          e.target.value === 'record');
+        document.getElementById('fileInput').hidden = e.target.value !== 'file';
+        document.getElementById('recordingControls').hidden = e.target.value !== 'record';
       });
     });
 
-    // Recording controls
     document.getElementById('recordButton').addEventListener('click', toggleRecording);
 
     async function toggleRecording() {
@@ -218,7 +112,6 @@
           recordingStartTime = Date.now();
           updateRecordingTime();
           document.getElementById('recordButton').textContent = 'Stop Recording';
-          document.getElementById('recordButton').classList.add('recording');
           document.getElementById('status').textContent = 'Recording...';
           
         } catch (err) {
@@ -231,7 +124,6 @@
         isRecording = false;
         clearInterval(recordingTimer);
         document.getElementById('recordButton').textContent = 'Start Recording';
-        document.getElementById('recordButton').classList.remove('recording');
       }
     }
 
@@ -247,7 +139,6 @@
       }, 1000);
     }
 
-    // Handle file upload
     document.getElementById('fileInput').addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -309,11 +200,9 @@
       
       source.buffer = sourceBuffer;
       
-      // RMS normalization to maintain consistent volume
       const gainReduction = 1 / Math.sqrt(Math.pow(2, currentGeneration));
       gainNode.gain.value = INITIAL_VOLUME * gainReduction;
 
-      // Calculate delay with variation
       const randomVariation = (Math.random() * 2 - 1) * DELAY_VARIATION;
       const delay = (BASE_DELAY + randomVariation) * index / 1000;
 
