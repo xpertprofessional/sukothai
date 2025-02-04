@@ -6,7 +6,7 @@
 <body>
   <h1>Sukothai Generator</h1>
   <p>Create a Sukothai-style composition using an audio file or recording.</p>
-
+  
   <div>
     <h3>Choose Input Method</h3>
     <div>
@@ -18,13 +18,13 @@
     <div>
       <input type="radio" name="inputMethod" id="recordMethod" value="record">
       <label for="recordMethod">Record</label>
-      <div id="recordingControls" hidden>
+      <span id="recordingControls" hidden>
         <button id="recordButton">Start Recording</button>
         <span id="recordingTime">00:00</span>
-      </div>
+      </span>
     </div>
   </div>
-<br>
+
   <div>
     <label for="maxLayers">Maximum Number of Layers:</label>
     <select id="maxLayers">
@@ -43,15 +43,16 @@
       <option value="12">4096 layers</option>
     </select>
   </div>
-<br>
+
   <div>
     <button id="startButton" disabled>Start</button>
     <button id="stopButton" disabled>Stop</button>
   </div>
-<br> 
+  
   <div id="status">Ready to start</div>
 
   <script>
+    // Rest of the JavaScript remains exactly the same
     const INITIAL_VOLUME = 1.0;
     const BASE_DELAY = 100;
     const DELAY_VARIATION = 5;
