@@ -6,15 +6,11 @@
 <body>
   <h1>Sukothai Generator</h1>
   <p>Create a Sukothai-style composition using an audio file or recording.</p>
-  
-  <div>
-    <h3>Choose Input Method</h3>
     <div>
       <input type="radio" name="inputMethod" id="fileMethod" value="file" checked>
       <label for="fileMethod">Upload</label>
       <input type="file" id="fileInput" accept="audio/*">
     </div>
-    
     <div>
       <input type="radio" name="inputMethod" id="recordMethod" value="record">
       <label for="recordMethod">Record</label>
@@ -23,7 +19,7 @@
         <span id="recordingTime">00:00</span>
       </span>
     </div>
-  </div>
+
 <br>
   <div>
     <label for="maxLayers">Maximum Number of Layers:</label>
@@ -40,7 +36,6 @@
       <option value="9">512 layers</option>
       <option value="10" selected>1024 layers</option>
       <option value="11">2048 layers</option>
-      <option value="12">4096 layers</option>
     </select>
   </div>
 <br>
@@ -221,7 +216,6 @@
         try {
           source.stop();
         } catch (e) {
-          // Ignore already stopped sources
         }
       });
       activeSources = [];
